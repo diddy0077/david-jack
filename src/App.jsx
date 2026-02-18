@@ -1,14 +1,54 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { 
   Mic, Calendar, Clock, Video, Code, Home, TrendingUp, Users, 
   User, Quote, Bolt, PenLine, ArrowDown, ArrowUp, CheckCircle,
-  Crown, ChevronRight, Sparkles
+  Crown, ChevronRight, Sparkles, Rocket, Target, DollarSign, Building2
 } from 'lucide-react';
 import './App.css';
+import photo1 from './assets/david2.jpeg'
+import photo2 from './assets/david1.jpeg'
 
 function App() {
   const [showRegistration, setShowRegistration] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const containerRef = useRef(null);
+  
+  const { scrollYProgress } = useScroll();
+  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  // Countdown timer
+  useEffect(() => {
+    const targetDate = new Date('2026-02-26T18:00:00+01:00');
+    
+    const updateCountdown = () => {
+      const now = new Date();
+      const diff = targetDate - now;
+      
+      if (diff > 0) {
+        setCountdown({
+          days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((diff / (1000 * 60)) % 60),
+          seconds: Math.floor((diff / 1000) % 60)
+        });
+      }
+    };
+    
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Mouse position for cursor glow effect
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   const toggleRegistration = () => {
     setShowRegistration(!showRegistration);
@@ -16,35 +56,56 @@ function App() {
 
   const handleDemoRegister = (e) => {
     e.preventDefault();
-    alert('✅ Registration demo. In a live environment this would send your data. Thank you!');
+    alert('✅ Registration successful! Check your email for the Google Meet link.');
   };
 
   // Animation variants
   const fadeInUp = {
-    hidden: { opacity: 0, y: 40 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } }
   };
 
   const staggerContainer = {
     hidden: { opacity: 0 },
     visible: { 
       opacity: 1,
-      transition: { staggerChildren: 0.15 }
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 }
     }
   };
 
-  const scaleIn = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
+  const floatAnimation = {
+    y: [0, -15, 0],
+    transition: { repeat: Infinity, duration: 4, ease: "easeInOut" }
   };
 
   return (
-    <div className="app">
+    <div className="app" ref={containerRef}>
+      {/* Scroll progress bar */}
+      <motion.div 
+        className="progress-bar"
+        style={{ scaleX }}
+      />
+
       {/* Animated background */}
       <div className="bg-pattern">
-        <div className="gradient-orb orb-1"></div>
-        <div className="gradient-orb orb-2"></div>
-        <div className="gradient-orb orb-3"></div>
+        <motion.div 
+          className="gradient-orb orb-1"
+          animate={{ 
+            scale: [1, 1.2, 1],
+            rotate: [0, 180, 360]
+          }}
+          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+        />
+        <motion.div 
+          className="gradient-orb orb-2"
+          animate={{ 
+            scale: [1.2, 1, 1.2],
+            x: [0, 50, 0]
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <div className="grid-pattern"></div>
+        <div className="noise-overlay"></div>
       </div>
 
       {/* Top bar */}
@@ -54,7 +115,7 @@ function App() {
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <motion.span whileHover={{ scale: 1.05 }} className="pitch-item">
+        <motion.span className="pitch-item" animate={floatAnimation}>
           <Mic size={16} /> PITCH QUEST <span>✦</span> MAFIA EDITION 
         </motion.span>
         <motion.span 
@@ -75,13 +136,25 @@ function App() {
           animate="visible"
         >
           <motion.div className="icon-strip" variants={fadeInUp}>
-            <motion.div whileHover={{ rotate: 360, scale: 1.1 }} transition={{ duration: 0.5 }} className="icon-wrapper">
+            <motion.div 
+              className="icon-wrapper"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            >
               <Home size={24} />
             </motion.div>
-            <motion.div whileHover={{ rotate: 360, scale: 1.1 }} transition={{ duration: 0.5 }} className="icon-wrapper">
+            <motion.div 
+              className="icon-wrapper"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            >
               <Code size={24} />
             </motion.div>
-            <motion.div whileHover={{ rotate: 360, scale: 1.1 }} transition={{ duration: 0.5 }} className="icon-wrapper">
+            <motion.div 
+              className="icon-wrapper"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+            >
               <TrendingUp size={24} />
             </motion.div>
           </motion.div>
@@ -92,7 +165,7 @@ function App() {
 
           <motion.div className="hero-tagline" variants={fadeInUp}>
             <motion.span
-              animate={{ x: [0, 5, 0] }}
+              animate={{ x: [0, 8, 0] }}
               transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
             >
               <ChevronRight size={28} />
@@ -100,17 +173,86 @@ function App() {
             From Code to Cashflow.
           </motion.div>
 
+          {/* Countdown Timer */}
+          <motion.div 
+            className="countdown-container"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.div className="countdown-item" variants={fadeInUp}>
+              <div className="countdown-value">{countdown.days}</div>
+              <div className="countdown-label">Days</div>
+            </motion.div>
+            <div className="countdown-separator">:</div>
+            <motion.div className="countdown-item" variants={fadeInUp}>
+              <div className="countdown-value">{countdown.hours}</div>
+              <div className="countdown-label">Hours</div>
+            </motion.div>
+            <div className="countdown-separator">:</div>
+            <motion.div className="countdown-item" variants={fadeInUp}>
+              <div className="countdown-value">{countdown.minutes}</div>
+              <div className="countdown-label">Minutes</div>
+            </motion.div>
+            <div className="countdown-separator">:</div>
+            <motion.div className="countdown-item" variants={fadeInUp}>
+              <div className="countdown-value">{countdown.seconds}</div>
+              <div className="countdown-label">Seconds</div>
+            </motion.div>
+          </motion.div>
+
           <motion.div className="hero-meta" variants={staggerContainer}>
-            <motion.div className="meta-chip" variants={scaleIn} whileHover={{ scale: 1.05 }}>
+            <motion.div className="meta-chip" variants={fadeInUp} whileHover={{ scale: 1.05 }}>
               <Calendar size={16} /> 26 February 2026
             </motion.div>
-            <motion.div className="meta-chip" variants={scaleIn} whileHover={{ scale: 1.05 }}>
+            <motion.div className="meta-chip" variants={fadeInUp} whileHover={{ scale: 1.05 }}>
               <Clock size={16} /> 6:00 PM (GMT+1)
             </motion.div>
-            <motion.div className="meta-chip" variants={scaleIn} whileHover={{ scale: 1.05 }}>
+            <motion.div className="meta-chip" variants={fadeInUp} whileHover={{ scale: 1.05 }}>
               <Video size={16} /> Google Meet
             </motion.div>
           </motion.div>
+
+          {/* CTA Button */}
+          <motion.button
+            className="cta-button"
+            variants={fadeInUp}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={toggleRegistration}
+          >
+            <Rocket size={20} />
+            Reserve Your Spot
+          </motion.button>
+        </motion.div>
+
+        {/* Stats Section */}
+        <motion.div 
+          className="stats-grid"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          {[
+            { icon: DollarSign, value: "$2.5M+", label: "Property Portfolio" },
+            { icon: Building2, value: "500+", label: "Properties Sold" },
+            { icon: Users, value: "10,000+", label: "Lives Impacted" },
+            { icon: Target, value: "98%", label: "Success Rate" }
+          ].map((stat, index) => (
+            <motion.div 
+              key={index}
+              className="stat-card"
+              variants={fadeInUp}
+              whileHover={{ y: -10, scale: 1.02 }}
+            >
+              <div className="stat-icon">
+                <stat.icon size={24} />
+              </div>
+              <div className="stat-value">{stat.value}</div>
+              <div className="stat-label">{stat.label}</div>
+            </motion.div>
+          ))}
         </motion.div>
 
         {/* Details Grid */}
@@ -170,13 +312,21 @@ function App() {
             <motion.div 
               className="speaker-img akuna"
               whileHover={{ scale: 1.05 }}
-            ></motion.div>
+            >
+              <img src={photo1} alt="Akuna Tamarakuro" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </motion.div>
             <h3>Akuna Tamarakuro</h3>
             <div className="speaker-role">Realtor · Growth Coach · Digital Marketer</div>
             <div className="speaker-bio">
               <Quote size={18} className="quote-icon" />
-              Nigerian-based realtor, founder of Tamark Digital, host of "Unmask" podcast, World Declaration Day organiser. Focused on wealth creation & investor mindset.
+              Akuna Tamarakuro is a Nigerian-based realtor and thought leader, known for his work in real estate investment and business growth strategies. He is the founder of Tamark Digital, hosts the "Unmask" podcast, and organizes "World Declaration Day". He focuses on wealth creation, frequently advising on transitioning from income earners to investors.
             </div>
+            <motion.div 
+              className="speaker-cta"
+              whileHover={{ scale: 1.02 }}
+            >
+              <a href="#register">View Profile →</a>
+            </motion.div>
           </motion.div>
 
           {/* Speaker 2 */}
@@ -188,13 +338,21 @@ function App() {
             <motion.div 
               className="speaker-img cornelius"
               whileHover={{ scale: 1.05 }}
-            ></motion.div>
+            >
+              <img src={photo2} alt="Nteiro Cornelius" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </motion.div>
             <h3>Nteiro Cornelius</h3>
             <div className="speaker-role">Africa Landlord · Sales Strategist</div>
             <div className="speaker-bio">
               <Quote size={18} className="quote-icon" />
               Real estate entrepreneur, mentors sales professionals, builds high‑performance closing teams. Teaches wealth creation through property.
             </div>
+            <motion.div 
+              className="speaker-cta"
+              whileHover={{ scale: 1.02 }}
+            >
+              <a href="#register">View Profile →</a>
+            </motion.div>
           </motion.div>
         </motion.div>
 
@@ -207,6 +365,9 @@ function App() {
           viewport={{ once: true }}
         >
           <div className="about-glow"></div>
+          <div className="about-badge">
+            <Sparkles size={14} /> EXCLUSIVE WEBINAR
+          </div>
           <p>
             <motion.span 
               className="emph"
@@ -218,6 +379,18 @@ function App() {
           <p>You've mastered tech. Now it's time to master wealth. This powerful webinar is designed for software developers and tech professionals who want to move beyond earning salaries and start building real, lasting assets through real estate.</p>
           <p><strong className="highlight">If you earn in tech, it's time to learn how to own.</strong> Join Akuna Tamarakuro and Nteiro Cornelius on 26th February 2026 · 6PM (GMT+1) on Google Meet for practical insights on turning your tech income into sustainable cashflow and long‑term wealth.</p>
           <p className="tagline">Your code pays you. Assets free you.</p>
+          
+          <div className="about-features">
+            <div className="feature-item">
+              <CheckCircle size={18} /> Live Q&A Session
+            </div>
+            <div className="feature-item">
+              <CheckCircle size={18} /> Exclusive Resources
+            </div>
+            <div className="feature-item">
+              <CheckCircle size={18} /> Networking Access
+            </div>
+          </div>
         </motion.div>
 
         {/* Registration Toggle */}
@@ -260,11 +433,11 @@ function App() {
                 <div className="reg-form-grid">
                   <div className="form-item">
                     <label>Full name</label> 
-                    <input type="text" placeholder="e.g. Ada Obi" />
+                    <input type="text" placeholder="e.g. Ada Obi" required />
                   </div>
                   <div className="form-item">
                     <label>Email</label> 
-                    <input type="email" placeholder="ada@example.com" />
+                    <input type="email" placeholder="ada@example.com" required />
                   </div>
                   <div className="form-item">
                     <label>Phone number</label> 
