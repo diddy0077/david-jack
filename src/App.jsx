@@ -76,6 +76,12 @@ function App() {
   const toggleRegistration = () => {
     setShowRegistration(!showRegistration);
   };
+  const registrationRef = useRef(null);
+
+
+  const scrollToRegistration = () => {
+    registrationRef.current.scrollIntoView({ behavior: 'smooth' });
+  }
 
   const handleDemoRegister = (e) => {
     e.preventDefault();
@@ -253,7 +259,7 @@ function App() {
             variants={fadeInUp}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={toggleRegistration}
+            onClick={scrollToRegistration}
           >
             <Rocket size={20} />
             Reserve Your Spot
@@ -347,7 +353,7 @@ function App() {
               className="speaker-img akuna"
               whileHover={{ scale: 1.05 }}
             >
-              <img src={photo1} alt="Akuna Tamarakuro" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src={photo2} alt="Akuna Tamarakuro" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </motion.div>
             <h3>Akuna Tamarakuro</h3>
             <div className="speaker-role">Realtor · Growth Coach · Digital Marketer</div>
@@ -373,7 +379,7 @@ function App() {
               className="speaker-img cornelius"
               whileHover={{ scale: 1.05 }}
             >
-              <img src={photo2} alt="Nteiro Cornelius" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src={photo1} alt="Nteiro Cornelius" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </motion.div>
             <h3>Nteiro Cornelius</h3>
             <div className="speaker-role">Africa Landlord · Sales Strategist</div>
@@ -428,7 +434,8 @@ function App() {
         </motion.div>
 
         {/* Registration Toggle */}
-        <motion.div 
+        <motion.div
+        ref={registrationRef} 
           className="reg-toggle"
           variants={fadeInUp}
           initial="hidden"
@@ -442,7 +449,7 @@ function App() {
             className={showRegistration ? 'active' : ''}
           >
             <PenLine size={18} /> 
-            {showRegistration ? 'Hide Registration' : 'Registration Form'} 
+            {showRegistration ? 'Hide Registration' : 'Click to open Registration Form'} 
             {showRegistration ? <ArrowUp size={18} /> : <ArrowDown size={18} />}
           </motion.button>
         </motion.div>
@@ -463,23 +470,23 @@ function App() {
                 <Sparkles size={18} /> separate registration — receive Google Meet link
               </div>
 
-              <form onSubmit={handleDemoRegister}>
+              <form action='https://formspree.io/f/mvzbqvrl' method='POST'>
                 <div className="reg-form-grid">
                   <div className="form-item">
                     <label>Full name</label> 
-                    <input type="text" placeholder="e.g. Ada Obi" required />
+                    <input type="text" placeholder="e.g. Ada Obi" name='full-name' required />
                   </div>
                   <div className="form-item">
                     <label>Email</label> 
-                    <input type="email" placeholder="ada@example.com" required />
+                    <input type="email" placeholder="ada@example.com" name='email' required />
                   </div>
                   <div className="form-item">
                     <label>Phone number</label> 
-                    <input type="tel" placeholder="+234 800 000 000" />
+                    <input type="tel" placeholder="+234 800 000 000" name='phone' />
                   </div>
                   <div className="form-item">
                     <label>Sex</label>
-                    <select>
+                    <select name='sex'>
                       <option>Male</option>
                       <option>Female</option>
                       <option>Rather not say</option>
@@ -487,11 +494,11 @@ function App() {
                   </div>
                   <div className="form-item full">
                     <label>Address</label> 
-                    <input type="text" placeholder="Street, city, state" />
+                    <input type="text" placeholder="Street, city, state" name='address'/>
                   </div>
                   <div className="form-item full">
                     <label>Occupation</label> 
-                    <input type="text" placeholder="Software engineer / tech lead / product manager" />
+                    <input type="text" placeholder="Software engineer / tech lead / product manager" name='occupation' />
                   </div>
                 </div>
 

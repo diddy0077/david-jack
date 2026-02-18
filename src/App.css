@@ -721,30 +721,91 @@ a, button, input, select, textarea {
   .container {
     padding: 1rem;
   }
-  
+
   .pitch-quest {
     padding: 0.75rem 1rem;
     gap: 1rem;
     font-size: 0.8rem;
+    width: 95%;
+    flex-wrap: wrap;
   }
-  
+
+  .hero h1 {
+    font-size: clamp(3rem, 15vw, 4.5rem);
+    letter-spacing: -0.03em;
+  }
+
+  .hero-tagline {
+    width: auto;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding: 1rem 1.5rem;
+    font-size: clamp(1rem, 4vw, 1.25rem);
+    border-radius: 30px;
+  }
+
   .reg-form-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .form-item.full {
     grid-column: span 1;
   }
-  
+
   .speakers-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
-  
-  .about-card {
+
+  .about-card, .reg-panel {
     padding: 2rem;
+    border-radius: 24px;
+  }
+
+  .countdown-container {
+    gap: 0.5rem;
+  }
+
+  .countdown-item {
+    padding: 0.75rem;
+    min-width: 75px;
+  }
+
+  .countdown-value {
+    font-size: 1.5rem;
   }
 }
 
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: clamp(2.5rem, 18vw, 3.5rem);
+  }
+
+  .pitch-quest {
+    flex-direction: column;
+    gap: 0.75rem;
+    border-radius: 50px;
+  }
+
+  .hero-meta {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+
+  .cta-button, .reg-toggle button, .reg-panel .btn-primary {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+
+  .reg-panel h2, .section-head h2 {
+    font-size: 1.5rem;
+  }
+}
 /* Hide custom cursor on touch devices */
 @media (hover: none) and (pointer: coarse) {
   .custom-cursor-dot, .custom-cursor-ring {
