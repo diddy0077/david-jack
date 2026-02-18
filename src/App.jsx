@@ -25,6 +25,7 @@ function App() {
   
   const { scrollYProgress } = useScroll();
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
+  const yOrb = useTransform(scrollYProgress, [0, 1], [0, 300]);
 
   // Countdown timer
   useEffect(() => {
@@ -126,6 +127,7 @@ function App() {
             scale: [1, 1.2, 1],
             rotate: [0, 180, 360]
           }}
+          style={{ y: yOrb }}
           transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
         />
         <motion.div 
@@ -140,7 +142,7 @@ function App() {
         <div className="noise-overlay"></div>
       </div>
 
-      {/* Top bar */}
+      {/* Top bar - Floating Pill */}
       <motion.div 
         className="pitch-quest"
         initial={{ y: -100 }}
