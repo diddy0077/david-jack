@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { 
   Mic, Calendar, Clock, Video, Code, Home, TrendingUp, Users, 
   User, Quote, Bolt, PenLine, ArrowDown, ArrowUp, CheckCircle,
@@ -11,7 +11,15 @@ import photo2 from './assets/david1.jpeg'
 
 function App() {
   const [showRegistration, setShowRegistration] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+  
+  // Cursor Motion Values (Fast updates without re-renders)
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
+  const springConfig = { damping: 25, stiffness: 700 };
+  const cursorXSpring = useSpring(cursorX, springConfig);
+  const cursorYSpring = useSpring(cursorY, springConfig);
+
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const containerRef = useRef(null);
   
@@ -41,13 +49,27 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Mouse position for cursor glow effect
+  // Optimized Mouse Tracking
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+    const moveCursor = (e) => {
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
     };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+
+    const handleMouseOver = (e) => {
+      if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A' || e.target.closest('button') || e.target.closest('a') || e.target.tagName === 'INPUT') {
+        setIsHovered(true);
+      } else {
+        setIsHovered(false);
+      }
+    };
+
+    window.addEventListener('mousemove', moveCursor);
+    window.addEventListener('mouseover', handleMouseOver);
+    return () => {
+      window.removeEventListener('mousemove', moveCursor);
+      window.removeEventListener('mouseover', handleMouseOver);
+    };
   }, []);
 
   const toggleRegistration = () => {
@@ -80,6 +102,16 @@ function App() {
 
   return (
     <div className="app" ref={containerRef}>
+      {/* Custom Cursor */}
+      <motion.div 
+        className="custom-cursor-dot"
+        style={{ x: cursorX, y: cursorY }}
+      />
+      <motion.div 
+        className={`custom-cursor-ring ${isHovered ? 'hovered' : ''}`}
+        style={{ x: cursorXSpring, y: cursorYSpring }}
+      />
+
       {/* Scroll progress bar */}
       <motion.div 
         className="progress-bar"

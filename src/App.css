@@ -29,6 +29,51 @@
 
 html, body {
   overflow-x: hidden;
+  cursor: none; /* Hide default cursor */
+}
+
+/* Ensure interactive elements don't show default cursor */
+a, button, input, select, textarea {
+  cursor: none;
+}
+
+/* ===== Custom Cursor ===== */
+.custom-cursor-dot,
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 50%;
+}
+
+.custom-cursor-dot {
+  width: 10px;
+  height: 10px;
+  background-color: var(--primary-red);
+  margin-left: -5px; /* Center alignment */
+  margin-top: -5px;
+  box-shadow: 0 0 10px rgba(178, 34, 52, 0.5);
+}
+
+.custom-cursor-ring {
+  width: 40px;
+  height: 40px;
+  border: 1.5px solid rgba(11, 38, 59, 0.4);
+  margin-left: -20px; /* Center alignment */
+  margin-top: -20px;
+  transition: width 0.2s, height 0.2s, margin 0.2s, border-color 0.2s, background-color 0.2s;
+}
+
+.custom-cursor-ring.hovered {
+  width: 60px;
+  height: 60px;
+  margin-left: -30px;
+  margin-top: -30px;
+  border-color: var(--primary-red);
+  background-color: rgba(178, 34, 52, 0.05);
+  border-width: 2px;
 }
 
 .app {
@@ -696,6 +741,16 @@ html, body {
   
   .about-card {
     padding: 2rem;
+  }
+}
+
+/* Hide custom cursor on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .custom-cursor-dot, .custom-cursor-ring {
+    display: none;
+  }
+  html, body, a, button, input, select {
+    cursor: auto;
   }
 }
 
