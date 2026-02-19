@@ -1,4 +1,6 @@
 /* ===== CSS Variables ===== */
+
+@import "tailwindcss";
 :root {
   --primary-red: #b22234;
   --primary-red-light: #e04f4f;

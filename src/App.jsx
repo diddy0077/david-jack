@@ -13,7 +13,6 @@ function App() {
   const [showRegistration, setShowRegistration] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   
-  // Cursor Motion Values (Fast updates without re-renders)
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   const springConfig = { damping: 25, stiffness: 700 };
@@ -27,7 +26,6 @@ function App() {
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
   const yOrb = useTransform(scrollYProgress, [0, 1], [0, 300]);
 
-  // Countdown timer
   useEffect(() => {
     const targetDate = new Date('2026-02-26T18:00:00+01:00');
     
@@ -83,12 +81,8 @@ function App() {
     registrationRef.current.scrollIntoView({ behavior: 'smooth' });
   }
 
-  const handleDemoRegister = (e) => {
-    e.preventDefault();
-    alert('✅ Registration successful! Check your email for the Google Meet link.');
-  };
 
-  // Animation variants
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } }
@@ -200,7 +194,7 @@ function App() {
           </motion.div>
 
           <motion.h1 variants={fadeInUp}>
-            <span className="thin">REORIENTATION</span> <span className="red-accent">26</span>
+            <span className="thin text-3xl sm:text-8xl">REORIENTATION</span> <span className="red-accent">26</span>
           </motion.h1>
 
           <motion.div className="hero-tagline" variants={fadeInUp}>
@@ -323,6 +317,42 @@ function App() {
           ))}
         </motion.div>
 
+        <motion.div 
+          className="about-card"
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          <div className="about-glow"></div>
+          <div className="about-badge">
+            <Sparkles size={14} /> EXCLUSIVE WEBINAR
+          </div>
+          <p>
+            <motion.span 
+              className="emph"
+              whileHover={{ scale: 1.02 }}
+            >
+              <Bolt size={16} /> REORIENTATION 26 – From Code to Cashflow
+            </motion.span>
+          </p>
+          <p>You've mastered tech. Now it's time to master wealth. This powerful webinar is designed for software developers and tech professionals who want to move beyond earning salaries and start building real, lasting assets through real estate.</p>
+          <p><strong className="highlight">If you earn in tech, it's time to learn how to own.</strong> Join Akuna Tamarakuro and Nteiro Cornelius on 26th February 2026 · 6PM (GMT+1) on Google Meet for practical insights on turning your tech income into sustainable cashflow and long‑term wealth.</p>
+          <p className="tagline">Your code pays you. Assets free you.</p>
+          
+          <div className="about-features">
+            <div className="feature-item">
+              <CheckCircle size={18} /> Live Q&A Session
+            </div>
+            <div className="feature-item">
+              <CheckCircle size={18} /> Exclusive Resources
+            </div>
+            <div className="feature-item">
+              <CheckCircle size={18} /> Networking Access
+            </div>
+          </div>
+        </motion.div>
+
         {/* Speakers Section */}
         <motion.div 
           className="section-head"
@@ -385,7 +415,7 @@ function App() {
             <div className="speaker-role">Africa Landlord · Sales Strategist</div>
             <div className="speaker-bio">
               <Quote size={18} className="quote-icon" />
-              Real estate entrepreneur, mentors sales professionals, builds high‑performance closing teams. Teaches wealth creation through property.
+              Nteiro Cornelius, known as Africa Landlord, is a Nigerian real estate entrepreneur and sales strategist. He mentors sales professionals around the world and is the Managing Director of HEXAKOL group, which houses four vibrant companies. Heirmpire Nigeria Limited, Xandoni realty, Kohlors media, and LAPID. He teaches practical wealth creation through strategic property investment.
             </div>
             <motion.div 
               className="speaker-cta"
@@ -397,41 +427,7 @@ function App() {
         </motion.div>
 
         {/* About Card */}
-        <motion.div 
-          className="about-card"
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          <div className="about-glow"></div>
-          <div className="about-badge">
-            <Sparkles size={14} /> EXCLUSIVE WEBINAR
-          </div>
-          <p>
-            <motion.span 
-              className="emph"
-              whileHover={{ scale: 1.02 }}
-            >
-              <Bolt size={16} /> REORIENTATION 26 – From Code to Cashflow
-            </motion.span>
-          </p>
-          <p>You've mastered tech. Now it's time to master wealth. This powerful webinar is designed for software developers and tech professionals who want to move beyond earning salaries and start building real, lasting assets through real estate.</p>
-          <p><strong className="highlight">If you earn in tech, it's time to learn how to own.</strong> Join Akuna Tamarakuro and Nteiro Cornelius on 26th February 2026 · 6PM (GMT+1) on Google Meet for practical insights on turning your tech income into sustainable cashflow and long‑term wealth.</p>
-          <p className="tagline">Your code pays you. Assets free you.</p>
-          
-          <div className="about-features">
-            <div className="feature-item">
-              <CheckCircle size={18} /> Live Q&A Session
-            </div>
-            <div className="feature-item">
-              <CheckCircle size={18} /> Exclusive Resources
-            </div>
-            <div className="feature-item">
-              <CheckCircle size={18} /> Networking Access
-            </div>
-          </div>
-        </motion.div>
+        
 
         {/* Registration Toggle */}
         <motion.div
