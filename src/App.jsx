@@ -204,7 +204,7 @@ function App() {
             >
               <ChevronRight size={28} />
             </motion.span>
-            From Code to Cashflow.
+            Turn your tech income into Property cash flow .
           </motion.div>
 
           {/* Countdown Timer */}
@@ -289,32 +289,35 @@ function App() {
           ))}
         </motion.div>
 
-        {/* Details Grid */}
+        {/* Problems Section */}
         <motion.div 
-          className="details-grid"
+          className="problems-section"
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          {[
-            { icon: Home, text: "real estate assets" },
-            { icon: Code, text: "devs build wealth" },
-            { icon: TrendingUp, text: "#code2cashflow" },
-            { icon: Users, text: "Akuna + Cornelius" }
-          ].map((item, index) => (
-            <motion.div 
-              key={index}
-              className="detail-block"
-              variants={fadeInUp}
-              whileHover={{ scale: 1.03, y: -5 }}
-            >
-              <div className="detail-icon">
-                <item.icon size={22} />
-              </div>
-              <span>{item.text}</span>
-            </motion.div>
-          ))}
+          <motion.h2 className="problems-heading" variants={fadeInUp}>
+            You earn well in tech, but is your money building assets?
+          </motion.h2>
+          <motion.h3 className="problems-subheading" variants={fadeInUp}>
+            Why you should attend:
+          </motion.h3>
+          <div className="problems-grid">
+            {[
+              { icon: DollarSign, text: "Salary Dependency" },
+              { icon: TrendingUp, text: "Inflation" },
+              { icon: Rocket, text: "No Passive Income" },
+              { icon: Building2, text: "No Asset Ownership" }
+            ].map((problem, index) => (
+              <motion.div key={index} className="problem-item" variants={fadeInUp}>
+                <div className="problem-icon">
+                  <problem.icon size={22} />
+                </div>
+                <span>{problem.text}</span>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
 
         <motion.div 
